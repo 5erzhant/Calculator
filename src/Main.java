@@ -1,10 +1,11 @@
 import java.util.Scanner;
 
 public class Main {
-    public static ROME_NUMBER[] romeValueArr = ROME_NUMBER.values();;
+    public static ROME_NUMBER[] romeValueArr = ROME_NUMBER.values();
 
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите выражение для вычисления.");
         String line = scanner.nextLine();
         System.out.println(calc(line));
     }
@@ -15,8 +16,8 @@ public class Main {
         int result;
         boolean isRome = false;
         String[] splitLine = input.split(" ");
-        if (splitLine.length < 3) {
-            throw new Exception("Неверный формат");
+        if (splitLine.length != 3) {
+            throw new Exception("Неверный формат выражения.");
         }
         try {
             firstValue = Integer.parseInt(splitLine[0]);
@@ -25,6 +26,9 @@ public class Main {
             isRome = true;
             firstValue = convertToInt(splitLine[0]);
             secondValue = convertToInt(splitLine[2]);
+        }
+        if ((firstValue < 0) || (firstValue >= 10) || (secondValue < 0) || (secondValue >= 10)) {
+            throw new Exception("Неверный диапазон чисел.");
         }
         if (splitLine[1].equals("+")) {
             result = firstValue + secondValue;
@@ -37,8 +41,8 @@ public class Main {
         } else {
             throw new Exception("Неверный формат");
         }
-        if (result < 0 && isRome) {
-            throw new Exception("Отрицательное значение");
+        if (result <= 0 && isRome) {
+            throw new Exception("Результат вычисления римских чисел должен быть больше 0.");
         }
         return isRome ? convertToRome(result) : String.valueOf(result);
     }
@@ -57,14 +61,14 @@ public class Main {
             }
         }
         if (romeValue.length() > 0) {
-            throw new Exception("Неверный формат");
+            throw new Exception("Неверный формат римского числа.");
         }
         return result;
     }
 
     public static String convertToRome (int input) throws Exception {
         if (input >= 4000) {
-            throw new Exception("Большое значение");
+            throw new Exception("Большое значение римского числа.");
         }
         int i = romeValueArr.length-1;
         StringBuilder sb = new StringBuilder();
@@ -83,7 +87,7 @@ public class Main {
     enum ROME_NUMBER {
         I(1), IV(4), V(5), IX(9), X(10), XL(40),
         L(50), XC(90), C(100), CD(400), D(500), CM(900), M(1000);
-        private int value;
+        private final int value;
         ROME_NUMBER(int value) {
             this.value = value;
         }
